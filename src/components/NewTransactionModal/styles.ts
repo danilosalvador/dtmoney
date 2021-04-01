@@ -1,5 +1,7 @@
-import styled from 'styled-components';
-import { darken } from 'polished';
+import styled, { css } from 'styled-components';
+import { darken, transparentize } from 'polished';
+
+export type TransactionDataType = 'deposit' | 'withdraw';
 
 export const Container = styled.form`
   h2 {
@@ -58,6 +60,19 @@ export const TransactionTypeContainer = styled.div`
 
 interface RadioBoxProps {
   isActive: boolean;
+  transactionType: TransactionDataType;
+}
+
+const TransactionType = {
+  default : css`
+    background: transparent;
+  `,
+  deposit : css`
+    background: ${transparentize(0.9, '#33cc95')};
+  `,
+  withdraw : css`
+    background: ${transparentize(0.9, '#e52e4d')};
+  `
 }
 
 export const RadioBox = styled.button<RadioBoxProps>`
@@ -65,7 +80,7 @@ export const RadioBox = styled.button<RadioBoxProps>`
   border: 1px solid #d7d7d7;
   border-radius: 0.25rem;
 
-  background: ${(props) => props.isActive ? '#ccc' : 'transparent'};
+  ${props => TransactionType[props.isActive ? props.transactionType : 'default']};
 
   display: flex;
   align-items: center;
