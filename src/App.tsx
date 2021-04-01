@@ -5,6 +5,7 @@ import { Dashboard } from "./components/Dashboard";
 import { Header } from "./components/Header";
 import { GlobalStyle } from "./styles/global";
 
+// Efeito apenas para ACESSIBILIDADE. Indica que o elemento root da página não está mais visível
 Modal.setAppElement('#root');
 
 export function App() {
