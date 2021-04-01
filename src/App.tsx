@@ -1,12 +1,10 @@
 import { useState } from "react";
-import Modal from "react-modal";
 
 import { Dashboard } from "./components/Dashboard";
 import { Header } from "./components/Header";
-import { GlobalStyle } from "./styles/global";
+import { NewTransactionModal } from "./components/NewTransactionModal";
 
-// Efeito apenas para ACESSIBILIDADE. Indica que o elemento root da página não está mais visível
-Modal.setAppElement('#root');
+import { GlobalStyle } from "./styles/global";
 
 export function App() {
   const [isNewTransactionModalOpen, setIsNewTransactionModalOpen] = useState(false);
@@ -25,12 +23,10 @@ export function App() {
 
       <Dashboard />
 
-      <Modal
+      <NewTransactionModal
         isOpen={isNewTransactionModalOpen}
         onRequestClose={handleCloseNewTransactionModal}
-      >
-        <h2>Cadastrar Transação</h2>
-      </Modal>
+      />
 
       <GlobalStyle />
     </>
