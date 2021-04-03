@@ -1,10 +1,11 @@
 import { FormEvent, useState } from "react";
 import Modal from "react-modal";
 
+import { useTransactions } from "../../hooks/useTransactions";
+
 import closeImg from "../../assets/close.svg";
 import incomeImg from "../../assets/income.svg";
 import outcomeImg from "../../assets/outcome.svg";
-import { api } from "../../services/api";
 
 import { TransactionDataType, Container, TransactionTypeContainer, RadioBox } from "./styles";
 
@@ -13,26 +14,35 @@ interface NewTransactionModalProps {
   onRequestClose: () => void;
 }
 
-// Efeito apenas para ACESSIBILIDADE. Indica que o elemento root da página não está mais visível
+// Efeito apenas para ACESSIBILIDADE. Indica que o elemento root da página não está mais visível qdo Modal estiver aberto
 Modal.setAppElement('#root');
 
 export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionModalProps) {
+  const { createTransaction } = useTransactions();
+
   const [title, setTitle] = useState('');
   const [value, setValue] = useState(0);
   const [type, setType] = useState<TransactionDataType>('deposit');
   const [category, setCategory] = useState('');
 
-  function handleCreateNewTransaction(event: FormEvent) {
+  async function handleCreateNewTransaction(event: FormEvent) {
     event.preventDefault();
 
-    const data = {
+    const transaction = {
       title, 
       value, 
       type, 
       category
     };
 
-    api.post('/transactions', data);
+    await createTransaction(transaction);
+
+    setTitle('');
+    setValue(0);
+    setType('deposit');
+    setCategory('');
+
+    onRequestClose();
   }
 
   return (
@@ -99,5 +109,5 @@ export function NewTransactionModal({ isOpen, onRequestClose }: NewTransactionMo
         </button>
       </Container>
     </Modal>
-  )
+  );
 }
